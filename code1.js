@@ -115,6 +115,45 @@ function solution(string) {
   }
   return string;
 }
-assert.strictEqual(solution(""), "");
-assert.strictEqual(solution("camelCasing"), "camel Casing");
-assert.strictEqual(solution("cam TelCasingTest"), "cam Tel Casing Test");
+// assert.strictEqual(solution(""), "");
+// assert.strictEqual(solution("camelCasing"), "camel Casing");
+// assert.strictEqual(solution("cam TelCasingTest"), "cam Tel Casing Test");
+
+/************************* Simple Pig Latin *********************************/
+// Move the first letter of each word to the end of it, then add "ay" to the end of the word. Leave punctuation marks untouched.
+// Examples
+// pigIt('Pig latin is cool'); // igPay atinlay siay oolcay
+// pigIt('Hello world !');     // elloHay orldway !
+
+//period, question mark, exclamation point, comma, colon, semicolon, dash, hyphen, brackets, braces, parentheses, apostrophe, quotation mark, and ellipsis
+function isWordSep(c) {
+  return " \t\n\r.?!:;-[]{}()'^`´\"".includes(c);
+}
+
+function pigIt(str) {
+  const words = [];
+  let wordBegIx = 0;
+  for (let i = 0; i <= str.length; i++) {
+    if (i === str.length || isWordSep(str.charAt(i))) {
+      if (wordBegIx === i) {
+        if (i < str.length) words.push(str.charAt(i));
+        wordBegIx = i + 1;
+        continue;
+      }
+
+      let word =
+        str.slice(wordBegIx + 1, i) +
+        str.charAt(wordBegIx) +
+        "ay" +
+        (i === str.length ? "" : str.charAt(i));
+      words.push(word);
+      wordBegIx = i + 1;
+    }
+  }
+  return words.join("");
+
+  //str.split(/(\.|\s)+/g);
+}
+// console.log(pigIt("ab...c def  ghi.jkl    DEF..."));
+// console.log(pigIt("Pig latin is cool"));
+// console.log(pigIt("This is my string"));
