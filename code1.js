@@ -261,10 +261,30 @@ function cakes(recipe, available) {
   return Math.floor(min);
 }
 
-let recipe = { flour: 500, sugar: 200, eggs: 1 };
-let available = { flour: 1200, sugar: 1200, eggs: 5, milk: 200 };
-assert.strictEqual(cakes(recipe, available), 2);
+// let recipe = { flour: 500, sugar: 200, eggs: 1 };
+// let available = { flour: 1200, sugar: 1200, eggs: 5, milk: 200 };
+// assert.strictEqual(cakes(recipe, available), 2);
 
-recipe = { apples: 3, flour: 300, sugar: 150, milk: 100, oil: 100 };
-available = { sugar: 500, flour: 2000, milk: 2000 };
-assert.strictEqual(cakes(recipe, available), 0);
+// recipe = { apples: 3, flour: 300, sugar: 150, milk: 100, oil: 100 };
+// available = { sugar: 500, flour: 2000, milk: 2000 };
+// assert.strictEqual(cakes(recipe, available), 0);
+
+/********************** Rot13 ***************************/
+// ROT13 is a simple letter substitution cipher that replaces a letter with the letter 13 letters after it in the alphabet. ROT13 is an example of the Caesar cipher.
+// Create a function that takes a string and returns the string ciphered with Rot13. If there are numbers or special characters included in the string, they should be returned as they are. Only letters from the latin/english alphabet should be shifted, like in the original Rot13 "implementation".
+
+function rot13(message) {
+  const a = "a".charCodeAt(0);
+  const z = "z".charCodeAt(0);
+  const A = "A".charCodeAt(0);
+  const Z = "Z".charCodeAt(0);
+  const nLett = z - a + 1;
+  const result = Array(message.length);
+  for (let i = 0; i < message.length; i++) {
+    let cc = message.charCodeAt(i);
+    if (a <= cc && cc <= z) cc = ((cc + 13 - a) % nLett) + a;
+    else if (A <= cc && cc <= Z) cc = ((cc + 13 - A) % nLett) + A;
+    result[i] = String.fromCharCode(cc);
+  }
+  return result.join("");
+}
