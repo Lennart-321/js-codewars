@@ -88,3 +88,33 @@ function toHex(int) {
 function rgb(r, g, b) {
   return toHex(assureLimit(r)) + toHex(assureLimit(g)) + toHex(assureLimit(b));
 }
+
+/******************** Break camelCase **************************/
+
+// Complete the solution so that the function will break up camel casing, using a space between words.
+// Example
+// "camelCasing"  =>  "camel Casing"
+// "identifier"   =>  "identifier"
+// ""             =>  ""
+function isSpace(c) {
+  return c === " " || c === "\t" || c === "\n" || c === "\r";
+}
+function solution(string) {
+  let preSpace = string.length > 0 && isSpace(string[0]);
+  for (let i = 1; i < string.length; i++) {
+    let c = string.charAt(i);
+    if (isSpace(c)) {
+      preSpace = true;
+      continue;
+    }
+    if (!preSpace && c === c.toUpperCase()) {
+      string = string.slice(0, i) + " " + string.slice(i);
+      i++;
+    }
+    preSpace = false;
+  }
+  return string;
+}
+assert.strictEqual(solution(""), "");
+assert.strictEqual(solution("camelCasing"), "camel Casing");
+assert.strictEqual(solution("cam TelCasingTest"), "cam Tel Casing Test");
