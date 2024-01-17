@@ -157,3 +157,77 @@ function pigIt(str) {
 // console.log(pigIt("ab...c def  ghi.jkl    DEF..."));
 // console.log(pigIt("Pig latin is cool"));
 // console.log(pigIt("This is my string"));
+
+/*************************** The Hashtag Generator ********************************/
+
+// The marketing team is spending way too much time typing in hashtags.
+// Let's help them with our own Hashtag Generator!
+
+// Here's the deal:
+
+// It must start with a hashtag (#).
+// All words must have their first letter capitalized.
+// If the final result is longer than 140 chars it must return false.
+// If the input or the result is an empty string it must return false.
+// Examples
+// " Hello there thanks for trying my Kata"  =>  "#HelloThereThanksForTryingMyKata"
+// "    Hello     World   "                  =>  "#HelloWorld"
+// ""                                        => false
+
+function generateHashtag(str) {
+  const words = str.split(" ");
+  for (let i = 0; i < words.length; i++) {
+    if (words[i].length > 0)
+      words[i] = words[i][0].toUpperCase() + words[i].slice(1);
+  }
+  const join = words.join("");
+  return join.length < 1 || 140 <= join.length ? false : "#" + join;
+}
+
+assert.strictEqual(
+  generateHashtag(""),
+  false,
+  "Expected an empty string to return false"
+);
+assert.strictEqual(
+  generateHashtag(" ".repeat(200)),
+  false,
+  "Still an empty string"
+);
+assert.strictEqual(
+  generateHashtag("Do We have A Hashtag"),
+  "#DoWeHaveAHashtag",
+  "Expected a Hashtag (#) at the beginning."
+);
+assert.strictEqual(
+  generateHashtag("Codewars"),
+  "#Codewars",
+  "Should handle a single word."
+);
+assert.strictEqual(
+  generateHashtag("Codewars Is Nice"),
+  "#CodewarsIsNice",
+  "Should remove spaces."
+);
+assert.strictEqual(
+  generateHashtag("Codewars is nice"),
+  "#CodewarsIsNice",
+  "Should capitalize first letters of words."
+);
+assert.strictEqual(
+  generateHashtag("code" + " ".repeat(140) + "wars"),
+  "#CodeWars"
+);
+assert.strictEqual(
+  generateHashtag(
+    "Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong Cat"
+  ),
+  false,
+  "Should return false if the final word is longer than 140 chars."
+);
+assert.strictEqual(
+  generateHashtag("a".repeat(139)),
+  "#A" + "a".repeat(138),
+  "Should work"
+);
+assert.strictEqual(generateHashtag("a".repeat(140)), false, "Too long");
