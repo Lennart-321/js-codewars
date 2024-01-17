@@ -71,3 +71,20 @@ function tribonacci(signature, n) {
 // console.log(tribonacci([3, 2, 1], 10));
 // console.log(tribonacci([1, 1, 1], 1));
 // console.log(tribonacci([300, 200, 100], 0));
+
+/************** RGB to Hex conversion ************/
+
+// The rgb function is incomplete. Complete it so that passing in RGB decimal values will result in a hexadecimal representation being returned. Valid decimal values for RGB are 0 - 255. Any values that fall out of that range must be rounded to the closest valid value.
+// Note: Your answer should always be 6 characters long, the shorthand with 3 will not work here.
+
+function assureLimit(nr) {
+  if (nr < 0) return 0;
+  if (nr > 255) return 255;
+  return Math.round(nr);
+}
+function toHex(int) {
+  return (int < 16 ? "0" : "") + int.toString(16).toUpperCase();
+}
+function rgb(r, g, b) {
+  return toHex(assureLimit(r)) + toHex(assureLimit(g)) + toHex(assureLimit(b));
+}
