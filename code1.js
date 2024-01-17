@@ -315,3 +315,41 @@ function digitalRoot(n) {
 // console.log(digitalRoot(942));
 // console.log(digitalRoot(132189));
 // console.log(digitalRoot(493193));
+
+/**************** Smallest Possible Sum ***************************************/
+// Given an array X of positive integers, its elements are to be transformed by running the following operation on them as many times as required:
+
+// if X[i] > X[j] then X[i] = X[i] - X[j]
+
+// When no more transformations are possible, return its sum ("smallest possible sum").
+
+// For instance, the successive transformation of the elements of input X = [6, 9, 21] is detailed below:
+
+// X_1 = [6, 9, 12] # -> X_1[2] = X[2] - X[1] = 21 - 9
+// X_2 = [6, 9, 6]  # -> X_2[2] = X_1[2] - X_1[0] = 12 - 6
+// X_3 = [6, 3, 6]  # -> X_3[1] = X_2[1] - X_2[0] = 9 - 6
+// X_4 = [6, 3, 3]  # -> X_4[2] = X_3[2] - X_3[1] = 6 - 3
+// X_5 = [3, 3, 3]  # -> X_5[1] = X_4[0] - X_4[1] = 6 - 3
+// The returning output is the sum of the final transformation(here 9).
+
+function smallestSum(numbers) {
+  if (numbers.length < 2) return numbers.length === 1 ? numbers[0] : 0;
+
+  let mi = Math.min(...numbers);
+  let miIx = numbers.indexOf(mi);
+  for (let i = 0; i < numbers.length; i++) {
+    if (i === miIx) continue;
+    let n = numbers[i];
+    let rest;
+    while ((rest = n % mi) !== 0) {
+      n = mi;
+      mi = rest;
+    }
+    if (mi === 1) return numbers.length;
+    numbers[i] = numbers[miIx] = mi;
+  }
+  return mi * numbers.length;
+}
+
+// let sol = smallestSum([6, 9, 21]);
+// console.log(typeof sol, sol);
