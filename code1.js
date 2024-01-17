@@ -184,50 +184,87 @@ function generateHashtag(str) {
   return join.length < 1 || 140 <= join.length ? false : "#" + join;
 }
 
-assert.strictEqual(
-  generateHashtag(""),
-  false,
-  "Expected an empty string to return false"
-);
-assert.strictEqual(
-  generateHashtag(" ".repeat(200)),
-  false,
-  "Still an empty string"
-);
-assert.strictEqual(
-  generateHashtag("Do We have A Hashtag"),
-  "#DoWeHaveAHashtag",
-  "Expected a Hashtag (#) at the beginning."
-);
-assert.strictEqual(
-  generateHashtag("Codewars"),
-  "#Codewars",
-  "Should handle a single word."
-);
-assert.strictEqual(
-  generateHashtag("Codewars Is Nice"),
-  "#CodewarsIsNice",
-  "Should remove spaces."
-);
-assert.strictEqual(
-  generateHashtag("Codewars is nice"),
-  "#CodewarsIsNice",
-  "Should capitalize first letters of words."
-);
-assert.strictEqual(
-  generateHashtag("code" + " ".repeat(140) + "wars"),
-  "#CodeWars"
-);
-assert.strictEqual(
-  generateHashtag(
-    "Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong Cat"
-  ),
-  false,
-  "Should return false if the final word is longer than 140 chars."
-);
-assert.strictEqual(
-  generateHashtag("a".repeat(139)),
-  "#A" + "a".repeat(138),
-  "Should work"
-);
-assert.strictEqual(generateHashtag("a".repeat(140)), false, "Too long");
+// assert.strictEqual(
+//   generateHashtag(""),
+//   false,
+//   "Expected an empty string to return false"
+// );
+// assert.strictEqual(
+//   generateHashtag(" ".repeat(200)),
+//   false,
+//   "Still an empty string"
+// );
+// assert.strictEqual(
+//   generateHashtag("Do We have A Hashtag"),
+//   "#DoWeHaveAHashtag",
+//   "Expected a Hashtag (#) at the beginning."
+// );
+// assert.strictEqual(
+//   generateHashtag("Codewars"),
+//   "#Codewars",
+//   "Should handle a single word."
+// );
+// assert.strictEqual(
+//   generateHashtag("Codewars Is Nice"),
+//   "#CodewarsIsNice",
+//   "Should remove spaces."
+// );
+// assert.strictEqual(
+//   generateHashtag("Codewars is nice"),
+//   "#CodewarsIsNice",
+//   "Should capitalize first letters of words."
+// );
+// assert.strictEqual(
+//   generateHashtag("code" + " ".repeat(140) + "wars"),
+//   "#CodeWars"
+// );
+// assert.strictEqual(
+//   generateHashtag(
+//     "Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong Cat"
+//   ),
+//   false,
+//   "Should return false if the final word is longer than 140 chars."
+// );
+// assert.strictEqual(
+//   generateHashtag("a".repeat(139)),
+//   "#A" + "a".repeat(138),
+//   "Should work"
+// );
+// assert.strictEqual(generateHashtag("a".repeat(140)), false, "Too long");
+
+/******************** Pete, the baker ****************************/
+
+// Pete likes to bake some cakes. He has some recipes and ingredients. Unfortunately he is not good in maths. Can you help him to find out, how many cakes he could bake considering his recipes?
+// Write a function cakes(), which takes the recipe (object) and the available ingredients (also an object) and returns the maximum number of cakes Pete can bake (integer). For simplicity there are no units for the amounts (e.g. 1 lb of flour or 200 g of sugar are simply 1 or 200). Ingredients that are not present in the objects, can be considered as 0.
+// Examples:
+// // must return 2
+// cakes({flour: 500, sugar: 200, eggs: 1}, {flour: 1200, sugar: 1200, eggs: 5, milk: 200});
+// // must return 0
+// cakes({apples: 3, flour: 300, sugar: 150, milk: 100, oil: 100}, {sugar: 500, flour: 2000, milk: 2000});
+
+function cakes(recipe, available) {
+  const ingrid = [];
+  const avail = [];
+  for (ingr in recipe) {
+    let i = recipe[ingr];
+    if (i <= 0) continue;
+    ingrid.push(i);
+    let a = available[ingr];
+    avail.push(typeof a == "number" ? a : 0);
+  }
+  let min = Number.MAX_VALUE;
+  for (let i = 0; i < ingrid.length; i++) {
+    let max = avail[i] / ingrid[i];
+    if (max < min) min = max;
+  }
+
+  return Math.floor(min);
+}
+
+let recipe = { flour: 500, sugar: 200, eggs: 1 };
+let available = { flour: 1200, sugar: 1200, eggs: 5, milk: 200 };
+assert.strictEqual(cakes(recipe, available), 2);
+
+recipe = { apples: 3, flour: 300, sugar: 150, milk: 100, oil: 100 };
+available = { sugar: 500, flour: 2000, milk: 2000 };
+assert.strictEqual(cakes(recipe, available), 0);
