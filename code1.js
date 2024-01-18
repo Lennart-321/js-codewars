@@ -440,3 +440,46 @@ function isValidWalk(walk) {
   });
   return ns === 0 && ew === 0 && err === 0;
 }
+
+/********************* Mexican Wave *****************************/
+
+function wave(str) {
+  const mxw = [];
+  const ws = wave.split("");
+  for (let i = 0; i < ws; i++) {
+    let c = ws[i];
+    if (c === " ") continue;
+    ws[i] = c.toUpperCase();
+    mxw.push(ws.join(""));
+    ws[i] = c;
+  }
+  return mxw;
+}
+
+/************************* Strip Comments **********************************/
+// const rxCh = "+*$ \\";
+// for (let m = 0; m < markers.length; m++) {if ()}
+
+function stripComments(text, markers) {
+  const lines = text.split("\n");
+  const marksRe = new RegExp("[" + markers.map(m=>"\\"+m).join("") + "]");
+  const stripedLines = lines.map(l => {
+    let match = l.match(marksRe);
+    let stLi = l;
+    if (match) {
+      stLi = l.slice(0, match["index"]);
+    }
+    return stLi.trimEnd();
+  });
+  return stripedLines.join("\n");
+}
+
+// //var result = solution("apples, pears # and bananas\ngrapes\nbananas !apples", ["#", "!"])
+// console.log(stripComments("apples, pears # and bananas\ngrapes\nbananas !apples", ["#", "!"]))
+// console.log(stripComments('aa + bb\ncc - dd\nee * ff', ['+', '-', '*']));
+// let re = new RegExp("[#!]");
+// let m = "apples, pears and bananas\ngrapes\nbananas apples".match(re);
+// console.log("apples, pears and bananas\ngrapes\nbananas apples".split("\n"));
+// console.log(m);
+// console.log(m?m["index"]:null);
+
