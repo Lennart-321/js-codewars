@@ -485,7 +485,7 @@ function stripComments(text, markers) {
 
 /************************* Snail **********************************/
 
-snail = function (array) {
+const snail0 = function (array) {
   if (array.length === 1 && !array[0].length)
     return [];
   const res = Array(array.length * array.length);
@@ -510,10 +510,83 @@ snail = function (array) {
 
   return res;
 }
+const snail = function (array) {
+  let result = [];
+  
+  while (array.length && array[0].length) {
+    result.push(...array[0]);
+    array.shift();
 
-// let array = [[1, 2, 3], [8, 9, 4], [7, 6, 5]];
+    if (!array.length) break;
+
+    array.forEach(r => { result.push(r.at(-1)); r.pop(); });
+
+    result.push(...array.at(-1).reverse());
+    array.pop();
+
+    for (i = array.length - 1; i >= 0; i--) { result.push(array[i][0]); array[i].shift(); };
+  }
+
+  return result;
+}
+
+//let array = [[1, 2, 3], [8, 9, 4], [7, 6, 5]];
 // let array = [[1, 2, 3, 4],
 // [12, 13, 14, 5],
 //   [11, 16, 15, 6],
 // [10,9,8,7]];
-// console.log(snail(array)); //=> [1,2,3,4,5,6,7,8,9]
+//console.log(snail(array)); //=> [1,2,3,4,5,6,7,8,9]
+
+/********************* Vigenère Cipher Helper *********************/
+
+
+function VigenèreCipher(key, abc) {
+
+  this.prepKey = function (key, abc) {
+    const pk = key.split("");
+    for (let i = 0; i < pk.length; i++) {
+      pk[i] = abc.indexOf(pk[i]);
+      if (pk[i] < 0) pk[i] = 0;
+    }
+    return pk;
+  }
+
+
+  this.abc = abc;
+  this.key = this.prepKey(key, abc);
+
+  this.encode = function (str) {
+    const sa = str.split("");
+    const kl = key.length;
+    for (let i = 0; i < sa.length; i++) {
+      let abcIx = this.abc.indexOf(sa[i]);
+      if (abcIx >= 0) {
+        sa[i] = abc.at((abcIx + this.key[i % kl]) % this.abc.length);
+      }
+    }
+    return sa.join("");
+  };
+  this.decode = function (str) {
+    const sa = str.split("");
+    const kl = key.length;
+    for (let i = 0; i < sa.length; i++) {
+      let abcIx = this.abc.indexOf(sa[i]);
+      if (abcIx >= 0) {
+        if ((abcIx -= this.key[i % kl]) < 0)
+          abcIx += this.abc.length;
+        sa[i] = abc.at(abcIx);
+      }
+    }
+    return sa.join("");
+  };
+
+}
+
+var abc, key;
+abc = "abcdefghijklmnopqrstuvwxyz";
+key = "password"
+let vc = new VigenèreCipher(key, abc);
+let enc = vc.encode('codewars'); //, 'rovwsoiv'
+let dec = vc.decode('rovwsoiv');
+console.log(enc, dec);
+
