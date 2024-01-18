@@ -141,11 +141,7 @@ function pigIt(str) {
         continue;
       }
 
-      let word =
-        str.slice(wordBegIx + 1, i) +
-        str.charAt(wordBegIx) +
-        "ay" +
-        (i === str.length ? "" : str.charAt(i));
+      let word = str.slice(wordBegIx + 1, i) + str.charAt(wordBegIx) + "ay" + (i === str.length ? "" : str.charAt(i));
       words.push(word);
       wordBegIx = i + 1;
     }
@@ -177,8 +173,7 @@ function pigIt(str) {
 function generateHashtag(str) {
   const words = str.split(" ");
   for (let i = 0; i < words.length; i++) {
-    if (words[i].length > 0)
-      words[i] = words[i][0].toUpperCase() + words[i].slice(1);
+    if (words[i].length > 0) words[i] = words[i][0].toUpperCase() + words[i].slice(1);
   }
   const join = words.join("");
   return join.length < 1 || 140 <= join.length ? false : "#" + join;
@@ -357,10 +352,7 @@ function smallestSum(numbers) {
 /***************** Find the unknown digit ******************************/
 function zeroAllowed(...numStrs) {
   for (let numStr of numStrs) {
-    if (
-      (numStr.startsWith("?") && numStr.length > 1) ||
-      (numStr.startsWith("-?") && numStr.length > 2)
-    ) {
+    if ((numStr.startsWith("?") && numStr.length > 1) || (numStr.startsWith("-?") && numStr.length > 2)) {
       return false;
     }
   }
@@ -423,9 +415,28 @@ function findDigit(exp) {
 
 //console.log(findDigit("123*45?=5?088"));
 // console.log(findDigit("-5?*-1=5?")); //, 0],
-// console.log(findDigit("19--45=5?")); //, -1],
-console.log(findDigit("-?56373--9216=-?47157"));
-console.log(findDigit("??*??=302?")); //, 5],
-console.log(findDigit("?*11=??")); //, 2],
-console.log(findDigit("??*1=??")); //, 2],
-console.log(findDigit("??+??=??")); //, -1];
+// // console.log(findDigit("19--45=5?")); //, -1],
+// console.log(findDigit("-?56373--9216=-?47157"));
+// console.log(findDigit("??*??=302?")); //, 5],
+// console.log(findDigit("?*11=??")); //, 2],
+// console.log(findDigit("??*1=??")); //, 2],
+// console.log(findDigit("??+??=??")); //, -1];
+
+/*********************** Take a Ten Minutes Walk *****************************/
+
+function isValidWalk(walk) {
+  if (walk.length !== 10) return false;
+  let ns = 0;
+  let ew = 0;
+  let err = 0;
+  walk.forEach(dir => {
+    switch (dir[0]) {
+      case "n": ns++; break;
+      case "s": ns--; break;
+      case "e": ew++; break;
+      case "w": ew--; break;
+      default: err++;
+    }
+  });
+  return ns === 0 && ew === 0 && err === 0;
+}
