@@ -353,3 +353,79 @@ function smallestSum(numbers) {
 
 // let sol = smallestSum([6, 9, 21]);
 // console.log(typeof sol, sol);
+
+/***************** Find the unknown digit ******************************/
+function zeroAllowed(...numStrs) {
+  for (let numStr of numStrs) {
+    if (
+      (numStr.startsWith("?") && numStr.length > 1) ||
+      (numStr.startsWith("-?") && numStr.length > 2)
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function candidateDigits(...numStrs) {
+  let digits = [];
+  let all = numStrs.join("");
+  for (let d = zeroAllowed(...numStrs) ? 0 : 1; d < 10; d++) {
+    let dstr = d.toString();
+    if (all.includes(dstr)) continue;
+    digits.push(dstr);
+  }
+  return digits;
+}
+
+function getParts(exp) {
+  let operation, result;
+  [operation, result] = exp.split("=");
+
+  let ops = ["+", "*", "-"];
+  let opfunc = [(a, b) => a + b, (a, b) => a * b, (a, b) => a - b];
+  let op, op1, op2, opIx;
+  for (let i = 0; i < ops.length; i++) {
+    if ((opIx = operation.indexOf(ops[i], 1)) > 0) {
+      op = opfunc[i];
+      op1 = operation.slice(0, opIx);
+      op2 = operation.slice(opIx + 1); //operation.split(opx);
+      break;
+    }
+  }
+  return [op1, op, op2, result];
+}
+
+function replQmToInt(dStr, ...numStrs) {
+  const result = [];
+  for (let numStr of numStrs) {
+    result.push(parseInt(numStr.replaceAll("?", dStr)));
+  }
+  return result;
+}
+
+function findDigit(exp) {
+  [op1, op, op2, result] = getParts(exp);
+
+  if (!op1 || !op || !op2 || !result) return -1;
+
+  const candidates = candidateDigits(op1, op2, result);
+
+  for (let digit of candidates) {
+    let ints = replQmToInt(digit, op1, op2, result);
+    if (op(ints[0], ints[1]) === ints[2]) {
+      return parseInt(digit);
+    }
+  }
+
+  return -1;
+}
+
+//console.log(findDigit("123*45?=5?088"));
+// console.log(findDigit("-5?*-1=5?")); //, 0],
+// console.log(findDigit("19--45=5?")); //, -1],
+console.log(findDigit("-?56373--9216=-?47157"));
+console.log(findDigit("??*??=302?")); //, 5],
+console.log(findDigit("?*11=??")); //, 2],
+console.log(findDigit("??*1=??")); //, 2],
+console.log(findDigit("??+??=??")); //, -1];
