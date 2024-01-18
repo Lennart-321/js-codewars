@@ -483,3 +483,37 @@ function stripComments(text, markers) {
 // console.log(m);
 // console.log(m?m["index"]:null);
 
+/************************* Snail **********************************/
+
+snail = function (array) {
+  if (array.length === 1 && !array[0].length)
+    return [];
+  const res = Array(array.length * array.length);
+
+  let dir = 0;
+  let rc = [0, 0];
+  let rcIx = 1;
+  const step = [1, 1, -1, -1];
+  const lim = [array.length,array.length,-1,0];
+
+  for (let count = 0; count < res.length; count++) {
+    res[count] = array[rc[0]][rc[1]];
+
+    if (rc[rcIx] + step[dir] === lim[dir]) {
+      lim[dir] -= step[dir];
+      dir = (dir + 1) % 4;
+      rcIx = (rcIx + 1) % 2;
+    }
+
+    rc[rcIx] += step[dir];
+  }
+
+  return res;
+}
+
+// let array = [[1, 2, 3], [8, 9, 4], [7, 6, 5]];
+// let array = [[1, 2, 3, 4],
+// [12, 13, 14, 5],
+//   [11, 16, 15, 6],
+// [10,9,8,7]];
+// console.log(snail(array)); //=> [1,2,3,4,5,6,7,8,9]
