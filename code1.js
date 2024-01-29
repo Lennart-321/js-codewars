@@ -812,7 +812,7 @@ function factorial0(n) {
 }
 
 //console.log(multiply([79, 3], [64, 8]));
-console.log(factorial(10));
-console.log(factorial(11));
-console.log(factorial(12));
-console.log(factorial(15));
+// console.log(factorial(10));
+// console.log(factorial(11));
+// console.log(factorial(12));
+// console.log(factorial(15));
